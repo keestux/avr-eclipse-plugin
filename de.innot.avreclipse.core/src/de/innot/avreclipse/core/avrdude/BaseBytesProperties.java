@@ -16,10 +16,12 @@
 package de.innot.avreclipse.core.avrdude;
 
 import java.io.FileNotFoundException;
+import java.net.URI;
 import java.text.MessageFormat;
 import java.util.List;
 
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.core.filesystem.URIUtil;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.IWorkspaceRoot;
@@ -43,16 +45,18 @@ import de.innot.avreclipse.ui.editors.FuseFileDocumentProvider;
 /**
  * Storage independent container for the Fuse and Lockbits Byte values.
  * <p>
- * This class is the bridge between the plugin property system and the {@link ByteValues} to
- * actually hold the data.
+ * This class is the bridge between the plugin property system and the
+ * {@link ByteValues} to actually hold the data.
  * </p>
  * <p>
- * This class has two modes. Depending on the {@link #fUseFile} flag, it will either read the fuse
- * values from a supplied file or immediate values stored in a byte values object. The mode is
- * selected by the user in the Properties user interface.
+ * This class has two modes. Depending on the {@link #fUseFile} flag, it will
+ * either read the fuse values from a supplied file or immediate values stored
+ * in a byte values object. The mode is selected by the user in the Properties
+ * user interface.
  * </p>
  * <p>
- * This class can be used either standalone or as part of the AVRProjectProperties structure.
+ * This class can be used either standalone or as part of the
+ * AVRProjectProperties structure.
  * </p>
  * 
  * @author Thomas Holland
@@ -61,26 +65,26 @@ import de.innot.avreclipse.ui.editors.FuseFileDocumentProvider;
  */
 public abstract class BaseBytesProperties {
 
-	public final static int			FILE_NOT_FOUND				= 200;
-	public final static int			FILE_MCU_PROPERTY_MISSING	= 201;
-	public final static int			FILE_WRONG_TYPE				= 202;
-	public final static int			FILE_INVALID_FILENAME		= 203;
-	public final static int			FILE_EMPTY_FILENAME			= 204;
+	public final static int FILE_NOT_FOUND = 200;
+	public final static int FILE_MCU_PROPERTY_MISSING = 201;
+	public final static int FILE_WRONG_TYPE = 202;
+	public final static int FILE_INVALID_FILENAME = 203;
+	public final static int FILE_EMPTY_FILENAME = 204;
 
 	/** The MCU id for which the current fuse byte values are valid */
-	private String					fMCUid;
-	private static final String		KEY_MCUID					= "MCUid";
+	private String fMCUid;
+	private static final String KEY_MCUID = "MCUid";
 
 	/**
 	 * Write flag
 	 * <p>
-	 * If <code>true</code>, the byte values are written to the target device when avrdude is
-	 * executed.
+	 * If <code>true</code>, the byte values are written to the target device
+	 * when avrdude is executed.
 	 * </p>
 	 */
-	private boolean					fWriteFlag;
-	private final static String		KEY_WRITEFLAG				= "Write";
-	private final static boolean	DEFAULT_WRITEFLAG			= false;
+	private boolean fWriteFlag;
+	private final static String KEY_WRITEFLAG = "Write";
+	private final static boolean DEFAULT_WRITEFLAG = false;
 
 	/**
 	 * Use file flag.
@@ -91,9 +95,9 @@ public abstract class BaseBytesProperties {
 	 * If <code>false</code> the values from {@link #fByteValues} are used.
 	 * </p>
 	 */
-	private boolean					fUseFile;
-	private final static String		KEY_USEFILE					= "UseFile";
-	private final static boolean	DEFAULT_USEFILE				= false;
+	private boolean fUseFile;
+	private final static String KEY_USEFILE = "UseFile";
+	private final static boolean DEFAULT_USEFILE = false;
 
 	/**
 	 * The name of the file.
@@ -101,14 +105,14 @@ public abstract class BaseBytesProperties {
 	 * This is used when the {@link #fUseFile} flag is <code>true</code>.
 	 * </p>
 	 * <p>
-	 * The name can contain macros. They can be resolved by the caller or with the
-	 * {@link #getFileNameResolved(IConfiguration)} method.
+	 * The name can contain macros. They can be resolved by the caller or with
+	 * the {@link #getFileNameResolved(IConfiguration)} method.
 	 * </p>
 	 */
-	private String					fFileName;
-	private final static String		KEY_FILENAME				= "FileName";
-	private final static String		DEFAULT_FILENAME			= "";
-	private ByteValues				fFileByteValues				= null;
+	private String fFileName;
+	private final static String KEY_FILENAME = "FileName";
+	private final static String DEFAULT_FILENAME = "";
+	private ByteValues fFileByteValues = null;
 
 	/**
 	 * The current byte values.
@@ -116,33 +120,35 @@ public abstract class BaseBytesProperties {
 	 * This is used when the {@link #fUseFile} flag is <code>false</code>.
 	 * </p>
 	 */
-	private ByteValues				fByteValues;
-	private final static String		KEY_BYTEVALUES				= "ByteValues";
-	private final static String		SEPARATOR					= ":";
+	private ByteValues fByteValues;
+	private final static String KEY_BYTEVALUES = "ByteValues";
+	private final static String SEPARATOR = ":";
 
 	/**
 	 * The <code>Preferences</code> used to read / save the current properties.
 	 * 
 	 */
-	private final Preferences		fPrefs;
+	private final Preferences fPrefs;
 
 	/**
-	 * The Parent <code>AVRDudeProperties</code>. Can be <code>null</code> if this class is
-	 * used in stand alone mode.
+	 * The Parent <code>AVRDudeProperties</code>. Can be <code>null</code> if
+	 * this class is used in stand alone mode.
 	 * 
 	 */
-	private final AVRDudeProperties	fParent;
+	private final AVRDudeProperties fParent;
 
 	/** Build configuration used to resolve filenames. */
-	private IConfiguration			fBuildConfig				= null;
+	private IConfiguration fBuildConfig = null;
 
 	/** <code>true</code> if the properties have been modified and need saving. */
-	private boolean					fDirty						= false;
+	private boolean fDirty = false;
 
 	/**
-	 * Create a new FuseBytesProperties object and load the properties from the Preferences.
+	 * Create a new FuseBytesProperties object and load the properties from the
+	 * Preferences.
 	 * <p>
-	 * If the given Preferences has no saved properties yet, the default values are used.
+	 * If the given Preferences has no saved properties yet, the default values
+	 * are used.
 	 * </p>
 	 * 
 	 * @param prefs
@@ -161,7 +167,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Cloning constructor.
 	 * <p>
-	 * All values from the source are copied, except for the source Preferences and the Parent.
+	 * All values from the source are copied, except for the source Preferences
+	 * and the Parent.
 	 * </p>
 	 * 
 	 * @param prefs
@@ -180,21 +187,24 @@ public abstract class BaseBytesProperties {
 
 		fWriteFlag = source.fWriteFlag;
 		fUseFile = source.fUseFile;
+		fFileName = source.fFileName;
 		fByteValues = new ByteValues(source.fByteValues);
 	}
 
 	/**
-	 * Hook method for subclasses to supply the {@link FuseType} for the properties.
+	 * Hook method for subclasses to supply the {@link FuseType} for the
+	 * properties.
 	 * 
-	 * @return Either <code>FuseType.FUSE</code> or <code>FuseType.LOCKBITS</code>
+	 * @return Either <code>FuseType.FUSE</code> or
+	 *         <code>FuseType.LOCKBITS</code>
 	 */
 	protected abstract FuseType getType();
 
 	/**
 	 * Get the MCU id value for which this object is valid.
 	 * 
-	 * @return <code>String</code> with an mcu id. May be <code>null</code> if a non-existing
-	 *         file has been set as source.
+	 * @return <code>String</code> with an mcu id. May be <code>null</code> if a
+	 *         non-existing file has been set as source.
 	 */
 	public String getMCUId() {
 
@@ -202,7 +212,8 @@ public abstract class BaseBytesProperties {
 			try {
 				return getByteValuesFromFile().getMCUId();
 			} catch (CoreException ce) {
-				// if the file does not exist or can not be opened we can not return a valid MCU
+				// if the file does not exist or can not be opened we can not
+				// return a valid MCU
 				return null;
 			}
 		}
@@ -211,14 +222,16 @@ public abstract class BaseBytesProperties {
 	}
 
 	/**
-	 * Tells this class that the current byte values are valid for the given MCU.
+	 * Tells this class that the current byte values are valid for the given
+	 * MCU.
 	 * <p>
-	 * Use this method with care, as there will be no checks if the current values actually make
-	 * sense for the new MCU type.
+	 * Use this method with care, as there will be no checks if the current
+	 * values actually make sense for the new MCU type.
 	 * </p>
 	 * <p>
-	 * The new setting is only valid for the internally stored values. If a file is used it is not
-	 * affected and a call to {@link #getMCUId()} will return the mcu from the file, not this one.
+	 * The new setting is only valid for the internally stored values. If a file
+	 * is used it is not affected and a call to {@link #getMCUId()} will return
+	 * the mcu from the file, not this one.
 	 * </p>
 	 * 
 	 * @param mcuid
@@ -228,7 +241,8 @@ public abstract class BaseBytesProperties {
 		if (!fMCUid.equals(mcuid)) {
 			fMCUid = mcuid;
 
-			// copy the old byte values to a new ByteValues Object for the given MCU
+			// copy the old byte values to a new ByteValues Object for the given
+			// MCU
 			ByteValues newByteValues = new ByteValues(getType(), mcuid);
 			newByteValues.setValues(fByteValues.getValues());
 			fByteValues = newByteValues;
@@ -241,8 +255,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get the "write to target MCU" flag.
 	 * 
-	 * @return <code>true</code> if the byte values should be written to the target device when
-	 *         avrdude is executed.
+	 * @return <code>true</code> if the byte values should be written to the
+	 *         target device when avrdude is executed.
 	 */
 	public boolean getWrite() {
 		return fWriteFlag;
@@ -252,8 +266,8 @@ public abstract class BaseBytesProperties {
 	 * Set the "write to target MCU" flag.
 	 * 
 	 * @param enable
-	 *            <code>true</code> to enable writing the bytes managed by this class when avrdude
-	 *            is executed.
+	 *            <code>true</code> to enable writing the bytes managed by this
+	 *            class when avrdude is executed.
 	 */
 	public void setWrite(boolean enable) {
 		if (fWriteFlag != enable) {
@@ -269,8 +283,8 @@ public abstract class BaseBytesProperties {
 	 * @see #getValue(int)
 	 * @see #getValues()
 	 * 
-	 * @return <code>true</code> if the byte values are taken from a file, <code>false</code> if
-	 *         the values stored in this object are used.
+	 * @return <code>true</code> if the byte values are taken from a file,
+	 *         <code>false</code> if the values stored in this object are used.
 	 */
 	public boolean getUseFile() {
 		return fUseFile;
@@ -285,8 +299,9 @@ public abstract class BaseBytesProperties {
 	 * 
 	 * 
 	 * @param usefile
-	 *            <code>true</code> if the fuse values should be read from the file,
-	 *            <code>false</code> if the values stored in this object are used.
+	 *            <code>true</code> if the fuse values should be read from the
+	 *            file, <code>false</code> if the values stored in this object
+	 *            are used.
 	 */
 	public void setUseFile(boolean usefile) {
 		if (fUseFile != usefile) {
@@ -298,17 +313,19 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get the current name of the file with all macros resolved.
 	 * <p>
-	 * Note: The returned path may still be OS independent and needs to be converted to an OS
-	 * specific path (e.g. with <code>new Path(resolvedname).toOSString()</code>
+	 * Note: The returned path may still be OS independent and needs to be
+	 * converted to an OS specific path (e.g. with
+	 * <code>new Path(resolvedname).toOSString()</code>
 	 * </p>
 	 * <p>
-	 * To resolve any macros this method needs an <code>IConfiguration</code> for the macro
-	 * context. This needs to be set with the {@link #setBuildConfig(IConfiguration)} method. If no
-	 * build configuration has been set, this method will return the filename unresolved.
+	 * To resolve any macros this method needs an <code>IConfiguration</code>
+	 * for the macro context. This needs to be set with the
+	 * {@link #setBuildConfig(IConfiguration)} method. If no build configuration
+	 * has been set, this method will return the filename unresolved.
 	 * </p>
 	 * 
-	 * @return <code>String</code> with the resolved filename. May be empty and may not point to
-	 *         an actual or valid file.
+	 * @return <code>String</code> with the resolved filename. May be empty and
+	 *         may not point to an actual or valid file.
 	 */
 	public String getFileNameResolved() {
 		if (fBuildConfig != null) {
@@ -320,8 +337,9 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Sets the current build configuration.
 	 * <p>
-	 * This is only used to expand macros in the filename of an optional fuse/locks file. If it is
-	 * <code>null</code> filenames can not be resolved and used as is.
+	 * This is only used to expand macros in the filename of an optional
+	 * fuse/locks file. If it is <code>null</code> filenames can not be resolved
+	 * and used as is.
 	 * </p>
 	 * 
 	 * @param config
@@ -337,8 +355,8 @@ public abstract class BaseBytesProperties {
 	 * The returned string may still contain macros.
 	 * </p>
 	 * 
-	 * @return <code>String</code> with the name of the file. May be empty and may not point to an
-	 *         actual or valid file.
+	 * @return <code>String</code> with the name of the file. May be empty and
+	 *         may not point to an actual or valid file.
 	 */
 	public String getFileName() {
 		return fFileName;
@@ -347,7 +365,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Set the name of the file.
 	 * <p>
-	 * The given filename is stored as-is. There are no checks if the file is valid or even exists.
+	 * The given filename is stored as-is. There are no checks if the file is
+	 * valid or even exists.
 	 * </p>
 	 * 
 	 * @param fusesfile
@@ -364,18 +383,23 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get all current byte values as a <code>ByteValues</code> object.
 	 * <p>
-	 * Get all bytes according to the current setting either from a file or from the object storage.<br>
-	 * The returned <code>ByteValues</code> object is a copy of the internal values and any
-	 * modifications are not reflected on the values in this object.
+	 * Get all bytes according to the current setting either from a file or from
+	 * the object storage.<br>
+	 * The returned <code>ByteValues</code> object is a copy of the internal
+	 * values and any modifications are not reflected on the values in this
+	 * object.
 	 * </p>
 	 * <p>
-	 * To modify the values the use of the {@link #setValue(int, int)}, {@link #setValues(int[])}
-	 * and {@link #setByteValues(ByteValues)} is required so this class can track any modifications
-	 * and set the dirty flag as required.
+	 * To modify the values the use of the {@link #setValue(int, int)},
+	 * {@link #setValues(int[])} and {@link #setByteValues(ByteValues)} is
+	 * required so this class can track any modifications and set the dirty flag
+	 * as required.
 	 * </p>
 	 * <p>
-	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no value was set.
-	 * </p> <
+	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no
+	 * value was set.
+	 * </p>
+	 * <
 	 * 
 	 * @return
 	 */
@@ -393,38 +417,51 @@ public abstract class BaseBytesProperties {
 	public ByteValues getByteValuesFromFile() throws CoreException {
 
 		if (fFileByteValues == null) {
-			// First get the IFile of the file and check that it exists
+			// First get the name of the file and check that it is not null /
+			// empty
 			String rawfilename = getFileName();
 			if (rawfilename == null || rawfilename.length() == 0) {
 				String message = "Empty Filename";
-				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID, FILE_EMPTY_FILENAME,
-						message, null);
+				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID,
+						FILE_EMPTY_FILENAME, message, null);
 				throw new CoreException(status);
 			}
+
+			// If the raw filename exists we grab the "cooked" one, check it
+			// again, and
+			// then get the IFile object for it.
 			String filename = getFileNameResolved();
 			if (filename == null || filename.length() == 0) {
-				String message = MessageFormat.format("Invalid filename [{0}]", getFileName());
+				String message = MessageFormat.format("Invalid filename [{0}]",
+						getFileName());
 				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID,
-						FILE_INVALID_FILENAME, message, new FileNotFoundException(filename));
+						FILE_INVALID_FILENAME, message,
+						new FileNotFoundException(filename));
 				throw new CoreException(status);
 			}
 			IPath location = new Path(filename);
 			IFile file = getFileFromLocation(location);
 			if (file == null || !file.exists()) {
-				String message = MessageFormat
-						.format("File not found [{0}]", location.toOSString());
-				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID, FILE_NOT_FOUND,
-						message, new FileNotFoundException(file != null ? file.getFullPath()
-								.toOSString() : null));
+				String message = MessageFormat.format("File not found [{0}]",
+						location.toOSString());
+				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID,
+						FILE_NOT_FOUND, message, new FileNotFoundException(
+								file != null ? file.getFullPath().toOSString()
+										: null));
 				throw new CoreException(status);
 			}
 
-			// then use the FuseFileDocumentProvider to get a ByteValues object for the file.
-			// The input file is immediately disconnected, because this class does not have a
+			// then use the FuseFileDocumentProvider to get a ByteValues object
+			// for the file.
+			// The input file is immediately disconnected, because this class
+			// does not have a
 			// dispose method where the the disconnection could take place.
-			// This means that any changes to the file are not synchronized. Therefore the
-			// ByteValues object returned by this method should not be used for prolonged periods.
-			FuseFileDocumentProvider provider = FuseFileDocumentProvider.getDefault();
+			// This means that any changes to the file are not synchronized.
+			// Therefore the
+			// ByteValues object returned by this method should not be used for
+			// prolonged periods.
+			FuseFileDocumentProvider provider = FuseFileDocumentProvider
+					.getDefault();
 			provider.connect(file);
 			fFileByteValues = provider.getByteValues(file);
 			provider.disconnect(file);
@@ -432,9 +469,10 @@ public abstract class BaseBytesProperties {
 			// If the fFileByteValues are null, then the file could not be read.
 			// probably the 'MCU' Property is missing.
 			if (fFileByteValues == null) {
-				String message = MessageFormat.format(
-						"{0} is not a valid {1} file (probably the MCU=xxxx property is missing)",
-						file.getFullPath(), getType());
+				String message = MessageFormat
+						.format(
+								"{0} is not a valid {1} file (probably the MCU=xxxx property is missing)",
+								file.getFullPath(), getType());
 				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID,
 						FILE_MCU_PROPERTY_MISSING, message, null);
 				throw new CoreException(status);
@@ -444,10 +482,11 @@ public abstract class BaseBytesProperties {
 			if (!getType().equals(fFileByteValues.getType())) {
 				// No! Discard the object and throw an Exception
 				String message = MessageFormat.format(
-						"{0} is a {1} file, but expected a {2} file.", file.getFullPath(),
-						fFileByteValues.getType(), getType());
-				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID, FILE_WRONG_TYPE,
-						message, null);
+						"{0} is a {1} file, but expected a {2} file.", file
+								.getFullPath(), fFileByteValues.getType(),
+						getType());
+				IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID,
+						FILE_WRONG_TYPE, message, null);
 				fFileByteValues = null;
 				throw new CoreException(status);
 			}
@@ -460,17 +499,18 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Sets the current byte values.
 	 * <p>
-	 * This method copies the given <code>ByteValues</code>, so that it cannot be changed without
-	 * going through the methods of this class.
+	 * This method copies the given <code>ByteValues</code>, so that it cannot
+	 * be changed without going through the methods of this class.
 	 * </p>
 	 * <p>
-	 * The MCU Id of this class is set to the one of the given <code>ByteValues</code>
+	 * The MCU Id of this class is set to the one of the given
+	 * <code>ByteValues</code>
 	 * 
 	 * @param newvalues
 	 *            The ByteValues object to copy from.
 	 * @throws IllegalArgumentException
-	 *             if the type of the new byte values (FUSE or LOCKS) does not match the current
-	 *             setting.
+	 *             if the type of the new byte values (FUSE or LOCKS) does not
+	 *             match the current setting.
 	 */
 	public void setByteValues(ByteValues newvalues) {
 		if (fUseFile) {
@@ -479,8 +519,8 @@ public abstract class BaseBytesProperties {
 		}
 
 		if (fByteValues.getType() != newvalues.getType()) {
-			throw new IllegalArgumentException("Cannot set a " + newvalues.getType().toString()
-					+ " ByteValues object");
+			throw new IllegalArgumentException("Cannot set a "
+					+ newvalues.getType().toString() + " ByteValues object");
 		}
 
 		fByteValues = new ByteValues(newvalues);
@@ -498,10 +538,12 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get all current byte values as an array of <code>int</code>.
 	 * <p>
-	 * Get all bytes according to the current setting either from a file or from the object storage.
+	 * Get all bytes according to the current setting either from a file or from
+	 * the object storage.
 	 * </p>
 	 * <p>
-	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no value was set.
+	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no
+	 * value was set.
 	 * </p>
 	 * 
 	 * @return Array of <code>int</code> with all byte values.
@@ -516,7 +558,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get all current byte values from the file.
 	 * <p>
-	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no value was set.
+	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no
+	 * value was set.
 	 * </p>
 	 * 
 	 * @return Array of <code>int</code> with all byte values.
@@ -534,7 +577,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get all current byte values stored in the object.
 	 * <p>
-	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no value was set.
+	 * All values are either a valid bytes (0 - 255) or <code>-1</code> if no
+	 * value was set.
 	 * </p>
 	 * 
 	 * @return Array of <code>int</code> with all byte values.
@@ -546,7 +590,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Sets the values of all bytes in the object.
 	 * <p>
-	 * Even with the "Use File" flag set, this method will set the values stored in the object.
+	 * Even with the "Use File" flag set, this method will set the values stored
+	 * in the object.
 	 * </p>
 	 * 
 	 * @see #setByteValue(int, int)
@@ -554,7 +599,8 @@ public abstract class BaseBytesProperties {
 	 * @param values
 	 *            Array of <code>int</code> with the new values.
 	 * @throws IllegalArgumentException
-	 *             if any value in the array is not a byte value or not <code>-1</code>
+	 *             if any value in the array is not a byte value or not
+	 *             <code>-1</code>
 	 */
 	public void setValues(int[] values) {
 		// While values[].length should be equal to the length of the internal
@@ -572,13 +618,15 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get a single byte value.
 	 * <p>
-	 * Get the byte according to the current setting either from a file or from the object storage.
+	 * Get the byte according to the current setting either from a file or from
+	 * the object storage.
 	 * </p>
 	 * 
 	 * @param index
-	 *            The byte to read. Must be between 0 and <code>getMaxBytes() - 1</code>
-	 * @return <code>int</code> with the byte value or <code>-1</code> if the value was not set
-	 *         or the index is out of bounds.
+	 *            The byte to read. Must be between 0 and
+	 *            <code>getMaxBytes() - 1</code>
+	 * @return <code>int</code> with the byte value or <code>-1</code> if the
+	 *         value was not set or the index is out of bounds.
 	 */
 	public int getValue(int index) {
 		if (!(0 <= index && index < fByteValues.getByteCount())) {
@@ -594,15 +642,17 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Set a single byte value.
 	 * <p>
-	 * The value is always written to the object storage, regardless of the "Use File" flag.
+	 * The value is always written to the object storage, regardless of the
+	 * "Use File" flag.
 	 * </p>
 	 * 
 	 * @param index
-	 *            The byte to set. Must be between 0 and <code>getByteCount() - 1</code>,
-	 *            otherwise the value is ignored.
+	 *            The byte to set. Must be between 0 and
+	 *            <code>getByteCount() - 1</code>, otherwise the value is
+	 *            ignored.
 	 * @param value
-	 *            <code>int</code> with the byte value (0-255) or <code>-1</code> to unset the
-	 *            value.
+	 *            <code>int</code> with the byte value (0-255) or
+	 *            <code>-1</code> to unset the value.
 	 * @throws IllegalArgumentException
 	 *             if the the value is out of range (-1 to 255)
 	 */
@@ -647,9 +697,10 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Get the list of avrdude arguments required to write all bytes.
 	 * <p>
-	 * Note: This method does <strong>not</strong> set the "-u" flag to disable the safemode. It is
-	 * up to the caller to add this flag. If the "disable safemode" flag is not set, avrdude will
-	 * restore the previous fusebyte values after the new values have been written.
+	 * Note: This method does <strong>not</strong> set the "-u" flag to disable
+	 * the safemode. It is up to the caller to add this flag. If the
+	 * "disable safemode" flag is not set, avrdude will restore the previous
+	 * fusebyte values after the new values have been written.
 	 * </p>
 	 * 
 	 * @return <code>List&lt;String&gt;</code> with avrdude action options.
@@ -659,7 +710,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Load the properties from the Preferences.
 	 * <p>
-	 * The <code>Preferences</code> object used is set in the constructor of this class.
+	 * The <code>Preferences</code> object used is set in the constructor of
+	 * this class.
 	 * </p>
 	 * 
 	 */
@@ -676,10 +728,18 @@ public abstract class BaseBytesProperties {
 
 		String fusevaluestring = fPrefs.get(KEY_BYTEVALUES, "");
 
+		// Check if the mcu id is different than the parent. In that case we
+		// need a new ByteValues object
+		if (!(fMCUid.equals(parentmcuid))) {
+			// copy the old byte values to a new ByteValues Object for the given
+			// MCU
+			fByteValues = new ByteValues(getType(), fMCUid);
+		}
+
 		// Clear the old values
 		fByteValues.clearValues();
 
-		// split the values
+		// split the values String
 		String[] values = fusevaluestring.split(SEPARATOR);
 		int count = Math.min(values.length, fByteValues.getByteCount());
 		for (int i = 0; i < count; i++) {
@@ -696,7 +756,8 @@ public abstract class BaseBytesProperties {
 	/**
 	 * Save the current property values to the Preferences.
 	 * <p>
-	 * The <code>Preferences</code> object used is set in the constructor of this class.
+	 * The <code>Preferences</code> object used is set in the constructor of
+	 * this class.
 	 * </p>
 	 * 
 	 * @throws BackingStoreException
@@ -725,10 +786,17 @@ public abstract class BaseBytesProperties {
 	}
 
 	/**
+	 * @return <code>true</code> if the object has unsaved changes
+	 */
+	public boolean isDirty() {
+		return fDirty;
+	}
+
+	/**
 	 * Test if this Object is valid for the given MCU.
 	 * 
-	 * @return <code>true</code> if the current byte values (either immediate or from a file) are
-	 *         valid for the given MCU id.
+	 * @return <code>true</code> if the current byte values (either immediate or
+	 *         from a file) are valid for the given MCU id.
 	 * 
 	 */
 	public boolean isCompatibleWith(String mcuid) {
@@ -758,22 +826,24 @@ public abstract class BaseBytesProperties {
 
 	}
 
-	private IFile getFileFromLocation(IPath location) throws CoreException {
+	private IFile getFileFromLocation(IPath location) {
+
+		// Convert the IPath to an URI (findFilesForLocation(IPath) is
+		// deprecated)
+		URI locationAsURI = URIUtil.toURI(location);
 
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceRoot root = workspace.getRoot();
 
-		IFile[] files = root.findFilesForLocation(location);
-		if (files.length == 0) {
-			// throw a FileNotFoundException
-			IStatus status = new Status(Status.ERROR, AVRPlugin.PLUGIN_ID, "File ["
-					+ location.toOSString() + "] not found.", new FileNotFoundException(location
-					.toOSString()));
-			throw new CoreException(status);
+		try {
+			IFile[] files = root.findFilesForLocationURI(locationAsURI);
+			if (files.length != 0) {
+				return files[0];
+			}
+		} catch (IllegalArgumentException iae) {
+			// The caller will throw the appropriate FIleNotFound Exception
 		}
-
-		return files[0];
-
+		return null;
 	}
 
 }
