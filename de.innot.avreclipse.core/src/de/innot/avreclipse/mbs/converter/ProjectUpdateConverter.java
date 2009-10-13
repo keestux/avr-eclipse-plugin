@@ -46,7 +46,7 @@ public class ProjectUpdateConverter implements IConvertManagedBuildObject {
 		// only for an existing AVR Eclipse Plugin project.
 		
 		if (toId.endsWith("2.1.0")) {
-			buildObj = Convert21.convert(buildObj, fromId);
+			return Convert21.convert(buildObj, fromId);
 		}
 		return buildObj;
 	}
