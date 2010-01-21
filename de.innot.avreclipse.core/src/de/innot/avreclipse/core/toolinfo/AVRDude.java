@@ -1076,6 +1076,9 @@ public class AVRDude implements IMCUProvider {
 			} else if (line.contains("NO_TARGET_POWER")) {
 				abort = true;
 				fAbortReason = Reason.NO_TARGET_POWER;
+			} else if (line.contains("can't set buffers for")) {
+				abort = true;
+				fAbortReason = Reason.INVALID_PORT;
 			}
 			if (abort) {
 				fProgressMonitor.setCanceled(true);
