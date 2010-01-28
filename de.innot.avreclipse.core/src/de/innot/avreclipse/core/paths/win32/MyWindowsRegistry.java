@@ -78,7 +78,7 @@ public class MyWindowsRegistry {
 			try {
 				int c;
 				while ((c = is.read()) != -1)
-					sb.append(c);
+					sb.append((char)c);
 			} catch (IOException e) {
 				;
 			}
@@ -225,7 +225,7 @@ public class MyWindowsRegistry {
 			results = getRegNames6432(key);
 		}
 
-		if (results.length >= index) {
+		if (index < results.length) {
 			return results[index].key;
 		} else {
 			return null;

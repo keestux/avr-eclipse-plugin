@@ -8,6 +8,14 @@
 $Id$
 
 ================================================================================
+Version 2.3.2 []
+
+Fixes:
+-----------------------------
+* Bug 2715567: Tool Settings: Assembler Debug Format not inhibited
+* Bug 2872447: getWinAVRBasePath throws exception on Vista 64
+  
+================================================================================
 Version 2.3.1 [04. December 2008]
 
 Fixes:
