@@ -46,8 +46,8 @@ public class TestSignatures {
 		// test a few MCUs
 		assertTrue("getMCUInfo(\"at86rf401\") != \"0x1E9181\"", fSigs.getMCUInfo("at86rf401")
 				.equals("0x1E9181"));
-		assertTrue("getMCUInfo(\"at90pwm324\") != \"0x1E9584\"", fSigs.getMCUInfo("at90pwm324")
-				.equals("0x1E9584"));
+		assertTrue("getMCUInfo(\"at90pwm316\") != \"0x1E9483\"", fSigs.getMCUInfo("at90pwm316")
+				.equals("0x1E9483"));
 		assertTrue("getMCUInfo(\"attiny861\") != \"0x1E930D\"", fSigs.getMCUInfo("attiny861")
 				.equals("0x1E930D"));
 	}

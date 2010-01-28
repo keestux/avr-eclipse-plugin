@@ -49,7 +49,7 @@ public class TestDatasheets {
 	public void testGetMCUInfo() {
 		// test a few MCUs
 		assertTrue("getMCUInfo(\"attiny43u\") != \"\"", fDatasheets.getMCUInfo("attiny43u").equals(
-				""));
+				"http://www.atmel.com/dyn/resources/prod_documents/doc8048.pdf"));
 		assertTrue("getMCUInfo(\"at90pwm2b\") not correct", fDatasheets.getMCUInfo("at90pwm2b")
 				.equals("http://www.atmel.com/dyn/resources/prod_documents/doc4317.pdf"));
 		assertTrue("getMCUInfo(\"attiny861\") not correct", fDatasheets.getMCUInfo("attiny861")
