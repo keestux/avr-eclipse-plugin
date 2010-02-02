@@ -228,10 +228,38 @@
 				value="de.innot.avreclipse.core.avrnature">
 			</filter>            
 			<enabledWhen>
-				<or>
-					<instanceof value="org.eclipse.core.resources.IProject"/>
-					<instanceof value="org.eclipse.cdt.core.model.ICProject"/>
-				</or>          
+				<and>
+					<or>
+						<instanceof value="org.eclipse.core.resources.IProject"/>
+						<instanceof value="org.eclipse.cdt.core.model.ICProject"/>
+					</or> 
+					<not>
+						<test property="de.innot.avreclipse.core.isStaticLib" />
+					</not>
+				</and>         
+			</enabledWhen>
+        </page>    
+		<!-- ############################### -->
+		<!-- AVRDude Properties for Static Lib -->
+		<!-- ############################### -->
+		<!-- Static Libs do not need avrdude support, so a dummy page is displayed -->
+		<page
+            class="de.innot.avreclipse.ui.propertypages.PageAVRDudeStaticLib"
+            id="de.innot.avreclipse.propertypage.avrdude.staticlib"
+            name="AVRDude"
+            category="de.innot.avreclipse.propertypage.avrmain" >
+			<filter
+				name="projectNature"
+				value="de.innot.avreclipse.core.avrnature">
+			</filter>            
+			<enabledWhen>
+				<and>
+					<or>
+						<instanceof value="org.eclipse.core.resources.IProject"/>
+						<instanceof value="org.eclipse.cdt.core.model.ICProject"/>
+					</or> 
+					<test property="de.innot.avreclipse.core.isStaticLib" />
+				</and>         
 			</enabledWhen>
         </page>    
 		
@@ -425,14 +453,17 @@
             scope="project"/>
 		<buildOutputProvider>
 			<open/>
-			<scannerInfoConsoleParser class="de.innot.avreclipse.mbs.scannerconfig.AVRGCCScannerInfoConsoleParser"/>
+			<scannerInfoConsoleParser 
+				class="de.innot.avreclipse.mbs.scannerconfig.AVRGCCScannerInfoConsoleParser"
+				compilerCommands="avr-gcc,avr-g++" />
 		</buildOutputProvider>
 		<scannerInfoProvider providerId="specsFile">
 			<run
 				arguments="-E -P -v -dD ${plugin_state_location}/specs.c"
 				command="avr-gcc"
 				class="org.eclipse.cdt.make.internal.core.scannerconfig2.GCCSpecsRunSIProvider"/>
-			<scannerInfoConsoleParser class="org.eclipse.cdt.make.internal.core.scannerconfig.gnu.GCCSpecsConsoleParser"/>
+			<scannerInfoConsoleParser 
+				class="org.eclipse.cdt.make.internal.core.scannerconfig.gnu.GCCSpecsConsoleParser"/>
 		</scannerInfoProvider>
 	</extension>
 
@@ -2424,6 +2455,16 @@
 	        mbsVersion="4.0.0">
 	    </converter>
 	</extension>
+ <extension
+       point="org.eclipse.core.expressions.propertyTesters">
+    <propertyTester
+          class="de.innot.avreclipse.core.ProjectTypeTester"
+          id="de.innot.avreclipse.core.projectTypeTester"
+          namespace="de.innot.avreclipse.core"
+          properties="isStaticLib"
+          type="org.eclipse.core.resources.IResource">
+    </propertyTester>
+ </extension>
 
 
 </plugin>

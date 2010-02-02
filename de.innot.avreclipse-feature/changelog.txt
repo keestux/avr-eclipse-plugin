@@ -10,10 +10,19 @@ $Id$
 ================================================================================
 Version 2.3.2 []
 
+Changed / Improved:
+-----------------------------
+* Fuse description files updated to AVR Tools Build 692 (4.18 SP1)
+* Bug 2485661: Added a new Assembler tool settings option for assembler specific
+               paths (-Wa,-I)
+               
 Fixes:
 -----------------------------
+* Bug 2454094: Remove AVRDude settings from static library projects
 * Bug 2715567: Tool Settings: Assembler Debug Format not inhibited
 * Bug 2872447: getWinAVRBasePath throws exception on Vista 64
+* avr/io.h parser updated for changes in the avr/io.h format
+
   
 ================================================================================
 Version 2.3.1 [04. December 2008]
