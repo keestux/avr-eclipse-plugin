@@ -19,9 +19,10 @@ Changed / Improved:
 Fixes:
 -----------------------------
 * Bug 2454094: Remove AVRDude settings from static library projects
+* Bug 2494131: Invalid optional paths block the Paths Preference page
 * Bug 2715567: Tool Settings: Assembler Debug Format not inhibited
 * Bug 2872447: getWinAVRBasePath throws exception on Vista 64
-* avr/io.h parser updated for changes in the avr/io.h format
+* avr/io.h parser updated for recent changes in the avr/io.h format
 
   
 ================================================================================
