@@ -75,7 +75,7 @@ public class ProjectTypeTester extends PropertyTester {
 	 * @see org.eclipse.core.expressions.IPropertyTester#test(java.lang.Object, java.lang.String,
 	 * java.lang.Object[], java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 
 		if (!(receiver instanceof IResource)) {
@@ -109,7 +109,7 @@ public class ProjectTypeTester extends PropertyTester {
 	/**
 	 * Get the IManagedProject for an IResource.
 	 * <p>
-	 * If the geiven resource is not or does not belong to a managed build project, then
+	 * If the given resource is not or does not belong to a managed build project, then
 	 * <code>null</code> is returned.
 	 * </p>
 	 * 
