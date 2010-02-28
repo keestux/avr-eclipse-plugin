@@ -18,6 +18,9 @@ Changed / Improved:
                
 Fixes:
 -----------------------------
+* Bug 2453936: AVR specific GUI Elements visible in all Perspectives
+* Bug 2453946: ClassCastExceptions / [All Configurations]
+               Partial fix -- no Exceptions anymore but MultiConfig still not supported
 * Bug 2454094: Remove AVRDude settings from static library projects
 * Bug 2494131: Invalid optional paths block the Paths Preference page
 * Bug 2715567: Tool Settings: Assembler Debug Format not inhibited
