@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!--Fuse/Lockbit description file for the AVR Eclipse plugin-->
 <!--Author: automatically created by AVR Eclipse plugin-->
-<!--Date: 28.01.10 12:30-->
+<!--Date: 17.06.10 12:52-->
 <!--Based on: Atmel Part Description File "ATmega2561.xml"-->
 <!--SVN: $Id$-->
 <description mcutype="atmega2561">
