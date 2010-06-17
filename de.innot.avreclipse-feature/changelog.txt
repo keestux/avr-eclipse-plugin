@@ -12,7 +12,7 @@ Version 2.3.2 []
 
 Changed / Improved:
 -----------------------------
-* Fuse description files updated to AVR Tools Build 692 (4.18 SP1)
+* Fuse description files updated to AVR Tools Build 700 (4.18 SP2)
 * Bug 2485661: Added a new Assembler tool settings option for assembler specific
                paths (-Wa,-I)
                
