@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <category-def name="CDT Optional Features" label="CDT Optional Features"/>
+   <feature url="features/de.innot.avreclipse_0.0.0.jar" id="de.innot.avreclipse" version="0.0.0">
+      <category name="CDT Optional Features"/>
+   </feature>
+   <feature url="features/de.innot.avreclipse.source_0.0.0.jar" id="de.innot.avreclipse.source" version="0.0.0">
+      <category name="CDT Optional Features"/>
+   </feature>
+</site>
