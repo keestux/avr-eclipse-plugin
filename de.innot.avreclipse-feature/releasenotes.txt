@@ -8,10 +8,12 @@
 $Id$
 
 ================================================================================
-Version 2.3.1
+Version 2.3.2
 
-Version 2.3.0 had a bug that could stop the plugin in some circumstances.
-This bug has been fixed immediately with 2.3.1. All notes still apply.
+This release fixes some bugs and minor issues. See Changelog.txt for details.
+
+================================================================================
+Version 2.3.1
 
 This is a major release with some new features
 
@@ -33,8 +35,12 @@ This is a major release with some new features
 2.1. System Requirements
 
    AVR Eclipse requires JRE 1.5 or higher and supports following versions of CDT:
-    * CDT 4.0.x (Eclipse 3.3 [Europa]) or
     * CDT 5.0.x (Eclipse 3.4 [Ganymede])
+    * CDT 6.0.x (Eclipse 3.5 [Galileo])
+    * CDT 7.0.x (Eclipse 3.6 [Helios])
+    
+    Note: The AVR Eclipse Plugin might work with CDT 4.0.x (Eclipse 3.3 [Europa]), but this
+    hasn't been tested for quite some time.
    
    older versions of the JRE or of Eclipse / CDT are not supported.
    

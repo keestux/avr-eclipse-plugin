@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/de.innot.avreclipse_0.0.0.jar" id="de.innot.avreclipse" version="0.0.0">
+      <category name="avr-eclipse"/>
+   </feature>
+   <category-def name="avr-eclipse" label="AVR Eclipse Plugin"/>
+</site>
