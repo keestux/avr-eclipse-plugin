@@ -16,6 +16,7 @@ Changed / Improved:
 * Bug 2485661: Added a new Assembler tool settings option for assembler specific
                paths (-Wa,-I)
 * gnu99 language standard now default for new projects
+* Plugin download is now a P2 repository which can be installed via "Install New Software..."
                
 Fixes:
 -----------------------------
