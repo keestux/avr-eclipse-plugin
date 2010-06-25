@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.junit.Test;
 
+import de.innot.avreclipse.core.avrdude.AVRDudeException.Reason;
 import de.innot.avreclipse.core.toolinfo.ICommandOutputListener.StreamSource;
 
 public class TestExternalCommandLauncher {
@@ -37,6 +39,20 @@ public class TestExternalCommandLauncher {
 			public synchronized void handleLine(String line, StreamSource source) {
 				sources.add(source);
 				lines.add(line);
+			}
+
+			@Override
+			public void init(IProgressMonitor monitor) {
+			}
+
+			@Override
+			public Reason getAbortReason() {
+				return null;
+			}
+
+			@Override
+			public String getAbortLine() {
+				return null;
 			}
 		});
 		result = testlauncher.launch();
