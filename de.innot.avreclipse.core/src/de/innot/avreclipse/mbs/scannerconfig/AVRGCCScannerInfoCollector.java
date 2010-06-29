@@ -40,6 +40,7 @@ import de.innot.avreclipse.core.properties.ProjectPropertyManager;
  * </p>
  * 
  */
+@SuppressWarnings("restriction")
 public class AVRGCCScannerInfoCollector extends PerProjectSICollector implements
 		IScannerInfoCollector3, IManagedScannerInfoCollector {
 
