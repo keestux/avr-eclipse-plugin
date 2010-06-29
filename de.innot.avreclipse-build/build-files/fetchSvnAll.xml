@@ -3,26 +3,26 @@
     <antcall target="svn.co">
       <param name="target" value="features"/>
       <param name="element.id" value="de.innot.avreclipse"/>
-      <param name="project.name" value="/R2.3 Maintenance/de.innot.avreclipse-feature"/>
-      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches"/>
+      <param name="project.name" value="/de.innot.avreclipse-feature"/>
+      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches/R2.3 Maintenance"/>
     </antcall>
     <antcall target="svn.co">
       <param name="target" value="plugins"/>
       <param name="element.id" value="de.innot.avreclipse"/>
-      <param name="project.name" value="/R2.3 Maintenance/de.innot.avreclipse"/>
-      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches"/>
+      <param name="project.name" value="/de.innot.avreclipse"/>
+      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches/R2.3 Maintenance"/>
     </antcall>
     <antcall target="svn.co">
       <param name="target" value="plugins"/>
       <param name="element.id" value="de.innot.avreclipse.doc"/>
-      <param name="project.name" value="/R2.3 Maintenance/de.innot.avreclipse.doc"/>
-      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches"/>
+      <param name="project.name" value="/de.innot.avreclipse.doc"/>
+      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches/R2.3 Maintenance"/>
     </antcall>
     <antcall target="svn.co">
       <param name="target" value="plugins"/>
       <param name="element.id" value="de.innot.avreclipse.core"/>
-      <param name="project.name" value="/R2.3 Maintenance/de.innot.avreclipse.core"/>
-      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches"/>
+      <param name="project.name" value="/de.innot.avreclipse.core"/>
+      <param name="url" value="https://avr-eclipse.svn.sourceforge.net/svnroot/avr-eclipse/branches/R2.3 Maintenance"/>
     </antcall>
   </target>
 </project>
