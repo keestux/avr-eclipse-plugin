@@ -58,7 +58,7 @@ public class AVRGCCScannerInfoCollector extends PerProjectSICollector implements
 		// type.
 
 		if (!type.equals(ScannerInfoTypes.TARGET_SPECIFIC_OPTION)) {
-			return super.getCollectedScannerInfo(resource, type);
+			return (List<String>) super.getCollectedScannerInfo(resource, type);
 		}
 
 		if (getDefinedSymbols().size() == 0) {
