@@ -87,9 +87,13 @@ public class ProjectTypeTester extends PropertyTester {
 			IManagedProject p = getManagedProject((IResource) receiver);
 			IBuildObjectProperties props = p.getBuildProperties();
 			IBuildProperty prop = props.getProperty("org.eclipse.cdt.build.core.buildArtefactType");
-			IBuildPropertyValue value = prop.getValue();
-			if (value.getId().equals("de.innot.avreclipse.buildArtefactType.staticLib")) {
-				return true;
+
+			// Bug 3023252: Makefile Projects don't have any properties, so prop may be null
+			if (prop != null) {
+				IBuildPropertyValue value = prop.getValue();
+				if (value.getId().equals("de.innot.avreclipse.buildArtefactType.staticLib")) {
+					return true;
+				}
 			}
 		}
 
@@ -97,9 +101,13 @@ public class ProjectTypeTester extends PropertyTester {
 			IManagedProject p = getManagedProject((IResource) receiver);
 			IBuildObjectProperties props = p.getBuildProperties();
 			IBuildProperty prop = props.getProperty("org.eclipse.cdt.build.core.buildArtefactType");
-			IBuildPropertyValue value = prop.getValue();
-			if (value.getId().equals("de.innot.avreclipse.buildArtefactType.app")) {
-				return true;
+
+			// Bug 3023252: Makefile Projects don't have any properties, so prop may be null
+			if (prop != null) {
+				IBuildPropertyValue value = prop.getValue();
+				if (value.getId().equals("de.innot.avreclipse.buildArtefactType.app")) {
+					return true;
+				}
 			}
 		}
 
