@@ -8,7 +8,15 @@
 $Id$
 
 ================================================================================
-Version 2.3.2 [23. June 2010]
+Version 2.3.3 [01. July 2010]
+
+Fixes:
+-----------------------------
+* Bug 3023252: NullPointerException when opening the Properties of a "Makefile" 
+               AVR-GCC Toolchain project.
+  
+================================================================================
+Version 2.3.2 [29. June 2010]
 
 Changed / Improved:
 -----------------------------

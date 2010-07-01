@@ -8,6 +8,11 @@
 $Id$
 
 ================================================================================
+Version 2.3.3
+
+This release fixes a single bug that caused failures with "makefile" AVR-GCC Projects.
+
+================================================================================
 Version 2.3.2
 
 This release fixes some bugs and minor issues. See Changelog.txt for details.
