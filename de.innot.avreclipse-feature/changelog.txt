@@ -8,11 +8,12 @@
 $Id$
 
 ================================================================================
-Version 2.3.4 [06. July 2010]
+Version 2.3.4 [27. July 2010]
 
 Fixes:
 -----------------------------
 * Bug 3023718: Errors when working with XMega MCUs
+* Bug 2872447: getWinAVRBasePath throws exception on Vista 64 (This time for real)
   
 ================================================================================
 Version 2.3.3 [01. July 2010]
