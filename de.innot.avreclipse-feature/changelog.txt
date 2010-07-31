@@ -8,7 +8,11 @@
 $Id$
 
 ================================================================================
-Version 2.3.4 [27. July 2010]
+Version 2.3.4 []
+
+Changed / Improved:
+-----------------------------
+* F/R 2905839: Upload Project To Target Device from any point in Project
 
 Fixes:
 -----------------------------
@@ -31,7 +35,7 @@ Changed / Improved:
 * Fuse description files updated to AVR Tools Build 700 (4.18 SP2)
 * Bug 2485661: Added a new Assembler tool settings option for assembler specific
                paths (-Wa,-I)
-* gnu99 language standard now default for new projects
+* F/R 2459280: gnu99 language standard now default for new projects
 * Plugin download is now a P2 repository which can be installed via "Install New Software..."
                
 Fixes:
