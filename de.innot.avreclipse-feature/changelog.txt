@@ -17,7 +17,7 @@ Changed / Improved:
 Fixes:
 -----------------------------
 * Bug 3023718: Errors when working with XMega MCUs
-* Bug 2872447: getWinAVRBasePath throws exception on Vista 64 (This time for real)
+* Bug 2872447: getWinAVRBasePath throws exception on Vista 64 (Again only partial fix)
   
 ================================================================================
 Version 2.3.3 [01. July 2010]

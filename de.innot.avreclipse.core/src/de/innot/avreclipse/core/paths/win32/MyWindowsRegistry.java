@@ -264,11 +264,14 @@ public class MyWindowsRegistry {
 				// line contains "REG_"
 				// split it into key, type, and value
 				String[] items = line.split("\t");
-				RegistryKeyValue keyvalue = new RegistryKeyValue();
-				keyvalue.key = items[0].trim();
-				keyvalue.type = items[1].trim();
-				keyvalue.value = items[2].trim();
-				results.add(keyvalue);
+				// TODO: Temporary fix for IndexOutOfBounds Exception on Windows 64
+				if (items.length >= 3) {
+					RegistryKeyValue keyvalue = new RegistryKeyValue();
+					keyvalue.key = items[0].trim();
+					keyvalue.type = items[1].trim();
+					keyvalue.value = items[2].trim();
+					results.add(keyvalue);
+				}
 			}
 		}
 
