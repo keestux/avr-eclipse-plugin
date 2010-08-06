@@ -113,7 +113,7 @@ public class MyWindowsRegistry {
 	private static WindowsRegistry		fCDTRegistryInstance;
 
 	/** Flag to inhibit calls to the CDT WindowsRegistry class. Used for test purposes. */
-	private boolean						fInhibitOriginal	= false;
+	private boolean						fInhibitOriginal	= true;
 
 	/**
 	 * Get the singleton instance of this class.
@@ -263,8 +263,19 @@ public class MyWindowsRegistry {
 			if (line.indexOf(REGTYPE_TOKEN) != -1) {
 				// line contains "REG_"
 				// split it into key, type, and value
-				String[] items = line.split("\t");
-				// TODO: Temporary fix for IndexOutOfBounds Exception on Windows 64
+				String[] items;
+				
+				// Problem: 'reg query' on win32 separtes key/type/value with tabs
+				// on win64 they are separated by four spaces.
+				String trimmedline = line.trim();
+				if (trimmedline.contains("\t")) {
+					items = trimmedline.split("\t");
+				} else if (trimmedline.contains("    ")) {
+					items = trimmedline.split("    ");
+				} else {
+					// not field separator found
+					break;
+				}
 				if (items.length >= 3) {
 					RegistryKeyValue keyvalue = new RegistryKeyValue();
 					keyvalue.key = items[0].trim();
