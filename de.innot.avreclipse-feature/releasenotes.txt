@@ -8,6 +8,12 @@
 $Id$
 
 ================================================================================
+Version 2.3.4
+
+This release fixes the long standing issues with running on 64bit Windows. Also
+XMegas are now fully supported (at least as far as WinAVR supports them)
+
+================================================================================
 Version 2.3.3
 
 This release fixes a single bug that caused failures with "makefile" AVR-GCC Projects.
